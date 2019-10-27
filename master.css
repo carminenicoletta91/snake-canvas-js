@@ -1,9 +1,18 @@
 canvas {
     border: 1px solid black;
-    margin: auto;
 }
 
 body {
     width: 100%;
     margin: 0 auto;
+}
+
+div#gamesection {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+div.stat {
+    text-align: center;
 }

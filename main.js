@@ -14,6 +14,37 @@ class Vect2d { //class to create vectors 2d
         this.ht = ht;
     }
 }
+class Circle {
+    constructor(x, y, r) {
+        this.set(x, y, r);
+    }
+    set(x, y, r) {
+        this.x = x;
+        this.y = y;
+        this.r = r;
+
+    }
+
+}
+class EntityCircle {
+    constructor(x, y, r) {
+        this.act = new Circle(x, y, r);
+        this.dx = 1;
+        this.dy = 1;
+    }
+    draw(context) {
+        cxt.beginPath();
+        cxt.arc(this.act.x, this.act.y, this.act.r, 0, 2 * Math.PI);
+        cxt.fillStyle = "yellow";
+        cxt.fill();
+
+        cxt.strokeStyle = "black";
+        cxt.stroke();
+    }
+
+
+
+}
 class Entity { //class to create the actors of the game
     constructor(x, y, wt, ht) { //x position , y position ,wt width,ht height
         this.act = new Vect2d(x, y, wt, ht);
@@ -33,12 +64,15 @@ let snake = new Entity(50, 50, 30, 10);
 let widthsnk = snake.act.wt;
 let heigthsnk = snake.act.ht;
 
-// let food = new Entity()
+
+let food = new EntityCircle(300, 100, 4);
+// console.log(food, "Mangiaree");
+
 keybord.onkeypress = function(e) {
     let charcode = e.which;
 
 
-    if (charcode === 100) { //pres d move left
+    if (charcode === 100) { //pres d move right
 
         if (updownbool === true) {
             snake.act.wt = widthsnk;
@@ -51,7 +85,7 @@ keybord.onkeypress = function(e) {
 
         snake.act.x += 5;
         updownbool = false;
-    } else if (charcode === 97) { //press a move rigth
+    } else if (charcode === 97) { //press a move left
 
         if (updownbool === true) {
             snake.act.wt = widthsnk;
@@ -95,20 +129,47 @@ keybord.onkeypress = function(e) {
 }
 
 
-function drawScreen() { //clean the screen
+
+function ChangePositionFood(food) {
+
+
+
+    let numberx = Math.random() * 750;
+    let numbery = Math.random() * 550;
+
+
+    food.act.x = numberx; //new position x
+    food.act.y = numbery; //new position y
+
+}
+
+
+
+function drawScreen() { //clear the screen
     cxt.fillStyle = "white";
     cxt.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-function Gameloop() { //
 
+
+let timefood = 0;
+
+function Gameloop() { //
+    timefood++;
+    requestAnimationFrame(Gameloop);
 
     drawScreen();
 
 
-    snake.draw(cxt)
+    if (timefood === 300) { //every 5 seconds it changes 300/60framesec;
+        ChangePositionFood(food);
+        timefood = 0;
+    }
+    food.draw();
+    snake.draw(cxt);
 
-    requestAnimationFrame(Gameloop);
+
+
 
 
 
